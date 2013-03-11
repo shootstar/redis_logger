@@ -1,0 +1,48 @@
+{% load i18n %}
+{% load debug_toolbar_utils %}
+<!--connection information-->
+
+{% if keys %}
+<table>
+    <thread>
+        <tr>
+            <th class="color">&nbsp;</th>
+            <th class="query" colspan="2">{% trans 'Key' %}</th>
+            <th class="func" colspan="2">{% trans 'func name' %}</th>
+            <th class="func_path" colspan="2">{% trans 'func path' %}</th>
+            <th class="timeline">{% trans 'Timeline' %}</th>
+            <th class="time">{% trans 'Time (ms)' %}</th>
+            <th class="actions">{% trans "Action" %}</th>
+        </tr>
+    </thread>
+    <tbody>
+    {% for key in keys %}
+    <tr class="djDebugHoverable" >
+            <td class="query">
+                <div class="djDebugSqlWrap">
+                    <div class="djDebugSql">{{ key.command|safe }}</div>
+                </div>
+            </td>
+            <td class="func">
+                <div class="djDebugSqlWrap">
+                    <div class="djDebugSql">{{ key.func|safe }}</div>
+                </div>
+            </td>
+            <td class="func_path">
+                <div class="djDebugSqlWrap">
+                    <div class="djDebugSql">{{ key.func_path|safe }}</div>
+                </div>
+            </td>
+            <td class="time">
+                {{ key.duration|floatformat:"2" }}
+            </td>
+            <td class="actions">
+                {{ key.result}}
+            </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+  <p>There was no redis usage in this request</p>
+{% endif %}
